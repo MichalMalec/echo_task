@@ -29,6 +29,6 @@ class MockController < ApplicationController
   end
 
   def render_not_found
-    render json: { errors: [{ code: "not_found", detail: "Requested page #{params[:path]} does not exist" }] }, status: :not_found
+    render json: { errors: [ { code: "not_found", detail: "Requested page #{params[:path]} does not exist" } ] }, status: :not_found
   end
 end

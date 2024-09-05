@@ -7,4 +7,3 @@ FactoryBot.define do
       body { '{"message": "Hello World"}' }
     end
 end
-  

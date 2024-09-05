@@ -1,6 +1,6 @@
 class EndpointsController < ApplicationController
-  before_action :set_endpoint, only: [:update, :destroy]
-  before_action :ensure_endpoint_exists, only: [:update, :destroy]
+  before_action :set_endpoint, only: [ :update, :destroy ]
+  before_action :ensure_endpoint_exists, only: [ :update, :destroy ]
 
   def index
     endpoints = Endpoint.all

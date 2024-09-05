@@ -8,12 +8,12 @@ class EndpointSerializer < ActiveModel::Serializer
       response: {
         code: object.code,
         headers: object.headers || {},
-        body: object.body || ''
+        body: object.body || ""
       }
     }
   end
 
   def type
-    'endpoints'
+    "endpoints"
   end
 end
