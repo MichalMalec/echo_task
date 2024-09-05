@@ -11,7 +11,7 @@ class MockController < ApplicationController
 
       render json: response_body, status: endpoint.code, headers: response_headers
     else
-      render json: { error: 'Not found' }, status: :not_found
+      render json: { "errors": [ { "code": "not_found", "detail": "Requested page #{path} does not exist" } ]  }, status: :not_found
     end
   end
 end
