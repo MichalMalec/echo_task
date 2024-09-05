@@ -1,50 +1,44 @@
 class EndpointsController < ApplicationController
-  before_action :endpoint_exists?, only: [:update, :destroy]
+  before_action :set_endpoint, only: [:update, :destroy]
+  before_action :ensure_endpoint_exists, only: [:update, :destroy]
 
   def index
-    @endpoints = Endpoint.all
-    render json: { data: ActiveModelSerializers::SerializableResource.new(@endpoints, each_serializer: EndpointSerializer) }
+    endpoints = Endpoint.all
+    render json: { data: serialize_collection(endpoints) }
   end
 
   def create
-    @endpoint = Endpoint.new(endpoint_params)
-    
-    if @endpoint.save
-      render json: { data: ActiveModelSerializers::SerializableResource.new(@endpoint, each_serializer: EndpointSerializer) }, status: :created
+    endpoint = Endpoint.new(endpoint_params)
+
+    if endpoint.save
+      render json: { data: serialize_resource(endpoint) }, status: :created
     else
-      render json: {
-        errors: @endpoint.errors.full_messages
-      }, status: :unprocessable_entity
+      render_error(endpoint.errors.full_messages, :unprocessable_entity)
     end
   end
 
   def update
     if @endpoint.update(endpoint_params)
-      render json: { data: ActiveModelSerializers::SerializableResource.new(@endpoint, each_serializer: EndpointSerializer) }
+      render json: { data: serialize_resource(@endpoint) }
     else
-      render json: {
-        errors: @endpoint.errors.full_messages
-      }, status: :unprocessable_entity
+      render_error(@endpoint.errors.full_messages, :unprocessable_entity)
     end
   end
 
   def destroy
     @endpoint.destroy
+    head :no_content
   end
 
   private
 
-  def endpoint_exists?
+  def set_endpoint
     @endpoint = Endpoint.find_by(id: params[:id])
+  end
+
+  def ensure_endpoint_exists
     unless @endpoint
-      render json: {
-        errors: [
-          {
-            code: "not_found",
-            detail: "Requested Endpoint with ID #{params[:id]} does not exist"
-          }
-        ]
-      }, status: :not_found
+      render_error("Requested Endpoint with ID #{params[:id]} does not exist", :not_found)
     end
   end
 
@@ -58,5 +52,17 @@ class EndpointsController < ApplicationController
       headers: attributes.dig(:response, :headers),
       body: attributes.dig(:response, :body)
     }
+  end
+
+  def serialize_resource(resource)
+    ActiveModelSerializers::SerializableResource.new(resource, serializer: EndpointSerializer)
+  end
+
+  def serialize_collection(collection)
+    ActiveModelSerializers::SerializableResource.new(collection, each_serializer: EndpointSerializer)
+  end
+
+  def render_error(messages, status)
+    render json: { errors: Array(messages).map { |msg| { detail: msg } } }, status: status
   end
 end
