@@ -10,12 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_04_205946) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_05_175012) do
   create_table "endpoints", force: :cascade do |t|
     t.string "path"
-    t.string "method"
-    t.text "response"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "verb", null: false
+    t.integer "code", default: 200, null: false
+    t.json "headers", default: {}
+    t.text "body"
   end
 end
