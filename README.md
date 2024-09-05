@@ -1,17 +1,17 @@
 # README
 
-* run app
+# run app
 `bin/rails s`
 
-* run tests
+# run tests
 `rspec`
 
-* cURLs for testing purposes
+# cURLs for testing purposes
 
-# GET /endpoints
+* GET /endpoints
 `curl -X GET http://localhost:3000/endpoints`
 
-# POST /endpoints
+* POST /endpoints
 ```
 curl -X POST http://localhost:3000/endpoints \
   -H "Content-Type: application/json" \
@@ -31,7 +31,7 @@ curl -X POST http://localhost:3000/endpoints \
       }'
 ```
 
-# PATCH /endpoints/:id
+* PATCH /endpoints/:id
 ```
 curl -X PATCH http://localhost:3000/endpoints/1 \
   -H "Content-Type: application/json" \
@@ -51,8 +51,8 @@ curl -X PATCH http://localhost:3000/endpoints/1 \
       }'
 ```
 
-# DELETE /endpoints/:id
+* DELETE /endpoints/:id
 `curl -X DELETE http://localhost:3000/endpoints/1`
 
-# Client: (e.g.) POST /url
+* Client: (e.g.) POST /url
 `curl -X POST http://localhost:3000/greeting`
