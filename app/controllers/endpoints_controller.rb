@@ -20,7 +20,7 @@ class EndpointsController < ApplicationController
 
   def update
     if @endpoint.update(endpoint_params)
-      render json: { data: ActiveModelSerializers::SerializableResource.new(@endpoints, each_serializer: EndpointSerializer) }
+      render json: { data: ActiveModelSerializers::SerializableResource.new(@endpoint, each_serializer: EndpointSerializer) }
     else
       render json: {
         errors: @endpoint.errors.full_messages
@@ -49,6 +49,14 @@ class EndpointsController < ApplicationController
   end
 
   def endpoint_params
-    params.require(:endpoint).permit(:verb, :path, :code, :headers, :body)
+    data = params.require(:data)
+    attributes = data.require(:attributes)
+    {
+      verb: attributes[:verb],
+      path: attributes[:path],
+      code: attributes.dig(:response, :code),
+      headers: attributes.dig(:response, :headers),
+      body: attributes.dig(:response, :body)
+    }
   end
 end
