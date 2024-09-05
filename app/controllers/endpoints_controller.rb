@@ -10,7 +10,7 @@ class EndpointsController < ApplicationController
     @endpoint = Endpoint.new(endpoint_params)
     
     if @endpoint.save
-      render json: { data: ActiveModelSerializers::SerializableResource.new(@endpoints, each_serializer: EndpointSerializer) }, status: :created
+      render json: { data: ActiveModelSerializers::SerializableResource.new(@endpoint, each_serializer: EndpointSerializer) }, status: :created
     else
       render json: {
         errors: @endpoint.errors.full_messages
